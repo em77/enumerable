@@ -41,9 +41,20 @@ module Enumerable
       if block_given?
         boolean = false if !block.call(element)
       else
-        boolean = true if !self
+        boolean = false if !self
       end
     end
     boolean
+  end
+
+  def my_any?(&block)
+    self.my_each do |element|
+      if block_given?
+        return true if block.call(element)
+      else
+        return true if self
+      end
+    end
+    false
   end
 end
