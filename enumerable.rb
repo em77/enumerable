@@ -34,4 +34,16 @@ module Enumerable
     return new_array if self.class == Array
     return new_hash if self.class == Hash
   end
+
+  def my_all?(&block)
+    boolean = true
+    self.my_each do |element|
+      if block_given?
+        boolean = false if !block.call(element)
+      else
+        boolean = true if !self
+      end
+    end
+    boolean
+  end
 end
