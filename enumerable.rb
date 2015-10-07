@@ -1,5 +1,6 @@
 module Enumerable
   def my_each(&block)
+    return self.to_enum(:my_each) if !block_given?
     counter = 0
     while counter < self.length
       block.call(self[counter])
@@ -9,6 +10,7 @@ module Enumerable
   end
 
   def my_each_with_index(&block)
+    return self.to_enum(:my_each_with_index) if !block_given?
     counter = 0
     while counter < self.length
       block.call(self[counter], counter)
@@ -18,12 +20,15 @@ module Enumerable
   end
 
   def my_select(&block)
-    new_hash = {}
+    return self.to_enum(:my_select) if !block_given?
     new_array = []
+    new_hash = {}
     self.my_each do |element|
-      if block.call(element)
-        new_array.push(element) if self.class == Array
-        new_hash[self.key(element)] = element if self.class == Hash
+      if self.class == Array
+        new_array.push(element) if block.call(element)
+      elsif self.class == Hash
+        new_hash[self.key(element)] = element if 
+          block.call(self.key(element), element)
       end
     end
     return new_array if self.class == Array
