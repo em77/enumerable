@@ -16,4 +16,17 @@ module Enumerable
     end
     self
   end
+
+  def my_select(&block)
+    new_hash = {}
+    new_array = []
+    self.my_each do |element|
+      if block.call(element)
+        new_array.push(element) if self.class == Array
+        new_hash[self.key(element)] = element if self.class == Hash
+      end
+    end
+    return new_array if self.class == Array
+    return new_hash if self.class == Hash
+  end
 end
