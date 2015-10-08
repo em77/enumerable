@@ -88,4 +88,15 @@ module Enumerable
     end
     counter
   end
+
+  def my_map(&block)
+    return self.to_enum(:my_map) if !block_given?
+    new_array = []
+    counter = 0
+    while counter < self.length
+      new_array << block.call(self.to_a[counter])
+      counter += 1
+    end
+    new_array
+  end
 end
