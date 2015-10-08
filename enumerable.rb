@@ -69,4 +69,23 @@ module Enumerable
     end
     boolean
   end
+
+  def my_count(arg = nil, &block)
+    counter = 0
+    if arg.nil? && !block_given?
+      self.my_each do |element|
+        counter += 1
+      end
+    elsif !arg.nil?
+      puts "warning: given block not used"
+      self.my_each do |element|
+        counter += 1 if element == arg
+      end
+    else
+      self.my_each do |element|
+        counter += 1 if block.call(element)
+      end
+    end
+    counter
+  end
 end
