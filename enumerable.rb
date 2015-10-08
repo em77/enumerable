@@ -57,4 +57,16 @@ module Enumerable
     end
     false
   end
+
+  def my_none?(&block)
+    boolean = true
+    self.my_each do |element|
+      if block_given?
+        boolean = false if block.call(element)
+      else
+        boolean = false if self
+      end
+    end
+    boolean
+  end
 end
