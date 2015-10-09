@@ -99,4 +99,16 @@ module Enumerable
     end
     new_array
   end
+
+  def my_inject(arg = nil, &block)
+    memo = arg if arg
+    self.my_each do |element|
+      if memo
+        memo = block.call(memo, element)
+      else
+        memo = element
+      end
+    end
+    memo
+  end
 end
