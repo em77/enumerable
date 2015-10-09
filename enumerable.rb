@@ -89,12 +89,19 @@ module Enumerable
     counter
   end
 
-  def my_map(&block)
-    return self.to_enum(:my_map) if !block_given?
+  def my_map(proc = nil, &block)
     new_array = []
     counter = 0
     while counter < self.length
-      new_array << block.call(self.to_a[counter])
+      if proc && block_given?
+        new_array << block.call(proc.call(self.to_a[counter]))
+      elsif block_given?
+        new_array << block.call(self.to_a[counter])
+      elsif proc
+        new_array << proc.call(self.to_a[counter])
+      else
+        return self.to_enum(:my_map) if !block_given?
+      end
       counter += 1
     end
     new_array
